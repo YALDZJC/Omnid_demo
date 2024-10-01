@@ -27,7 +27,7 @@
 #define RC_RY                      (int16_t)(RM_Clicker::RC_Ctl.rc.ch1 - 1024)
 #define RC_SW                      (int16_t)(RM_Clicker::RC_Ctl.rc.sw - 1024)
 
-#define ClickerHuart huart3
+#define ClickerHuart huart1
 //结构体
 typedef struct
 {

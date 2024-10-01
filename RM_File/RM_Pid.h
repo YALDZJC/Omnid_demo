@@ -127,18 +127,19 @@ inline double RM_PID::GetPidPos(Kpid_t kpid, double cin, double feedback, double
    //p值
    this->pid.p = kpid.kp * this->pid.now_e;
    //变速积分
-	if(fabs(this->pid.now_e) <= this->pid.IerrorB)
-	{
-		this->pid.Di = this->pid.now_e * 0.001;
-	}
-	if((this->pid.IerrorB < fabs(this->pid.now_e)) & (fabs(this->pid.now_e) <= this->pid.IerrorA + this->pid.IerrorB))
-	{
-		this->pid.Di = (this->pid.IerrorA - fabs(this->pid.now_e) + this->pid.IerrorB) / this->pid.IerrorA * this->pid.now_e * 0.001;
-	}
-	if(fabs(this->pid.now_e) > (this->pid.IerrorA + this->pid.IerrorB))
-	{
-		this->pid.Di = 0;
-	}
+//	if(fabs(this->pid.now_e) <= this->pid.IerrorB)
+//	{
+//		this->pid.Di = this->pid.now_e * 0.001;
+//	}
+//	if((this->pid.IerrorB < fabs(this->pid.now_e)) & (fabs(this->pid.now_e) <= this->pid.IerrorA + this->pid.IerrorB))
+//	{
+//		this->pid.Di = (this->pid.IerrorA - fabs(this->pid.now_e) + this->pid.IerrorB) / this->pid.IerrorA * this->pid.now_e * 0.001;
+//	}
+//	if(fabs(this->pid.now_e) > (this->pid.IerrorA + this->pid.IerrorB))
+//	{
+//		this->pid.Di = 0;
+//	}
+	
 	//积分计算
 	this->pid.i += this->pid.Di * kpid.ki;
 	//积分限幅

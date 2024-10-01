@@ -96,14 +96,15 @@ int main(void)
   MX_UART7_Init();
   MX_UART8_Init();
   MX_USART6_UART_Init();
+
   MX_TIM5_Init();
   MX_TIM6_Init();
   MX_USART1_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-	Total_tasks_Init();//?????????????
-	HAL_TIM_Base_Start_IT(&htim6);//?????????
-	HAL_TIM_Base_Start_IT(&htim5);//????
+	Total_tasks_Init();	//初始化
+	HAL_TIM_Base_Start_IT(&htim6);	//启动定时器
+	HAL_TIM_Base_Start_IT(&htim5);
   /* USER CODE END 2 */
 
   /* Infinite loop */

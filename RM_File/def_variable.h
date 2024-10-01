@@ -94,10 +94,10 @@ MedianFilter_t yaw_init_encoder_angle_MF;
 /***************************变量声明*********************************/
 
 //串口打印
-#define Send_Usart_Data_Huart huart1
+#define Send_Usart_Data_Huart huart6
 //云台到底盘
-#define Send_Gimbal_to_Chassis_Huart huart6
-#define Send_Gimbal_to_Chassis_Huart_LEN 12
+//#define Send_Gimbal_to_Chassis_Huart huart6
+//#define Send_Gimbal_to_Chassis_Huart_LEN 12
 
 //通信挂掉标记
 bool dir = false;
@@ -118,12 +118,12 @@ RM_StaticTime Total_tasks_staticTime;//控制时间x
 #define PITCH_MOTOR_ID 0x205
 
 //摩擦轮
-#define Friction_MOTOR_L_ID 0x203
+#define Friction_MOTOR_L_ID 0x201
 #define Friction_MOTOR_R_ID 0x202
 #define Friction_MAX_Speed 6500
 
 //拨盘
-#define Dial_MOTOR_R_ID 0x201
+#define Dial_MOTOR_R_ID 0x204
 #define Dial_MAX_Speed 3000
 
 //yaw轴大喵电机
@@ -171,11 +171,11 @@ RM_Key Mode2_key;
 float pitch_target_angle_gy = 0;//pitch期望角度,陀螺仪
 
 float pitch_target_angle_Encoder = 0;//pitch期望角度,陀螺仪
-Kpid_t kpid_pitch_angle(0, 0, 0);
-Kpid_t kpid_pitch_speed(0, 0, 0);
+Kpid_t kpid_pitch_angle(0.2, 0, 0);
+Kpid_t kpid_pitch_speed(500, 0, 0);
 RM_PID pid_pitch_angle;
 RM_PID pid_pitch_speed;
-TD_quadratic td_pitch_Encoder_speed;
+TD_quadratic td_pitch_Encoder_speed(100);
 
 //yaw
 float yaw_target_angle_gy = 0;//yaw期望角度,陀螺仪
@@ -187,12 +187,12 @@ Kpid_t kpid_yaw_gy(0.3,500,-0.02,0,0,0.1,2000);
 RM_PID pid_yaw_gy;
 
 //弹舱相关
-int32_t shoot_time;
+int32_t shoot_time = 200;
 int32_t shoot_time_ms;
 //弹仓PID
 int64_t Dial_angle;
 Kpid_t kpid_angle_dial(0.35, 0, 0.5);
-Kpid_t kpid_speed_dial(2, 0, 9);
+Kpid_t kpid_speed_dial(8, 0, 9);
 RM_PID pid_speed_dial;
 RM_PID pid_angle_dial;
 
@@ -201,7 +201,7 @@ RM_PID pid_DEMO;
 Kpid_t pid_DEMO_Init(0, 0, 0);
 UDE ude_pitch;
 
-float tar_pitch = 75;
+float tar_pitch;
 float tar_pitch_Demo;
 int32_t data_ms;
 

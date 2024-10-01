@@ -105,7 +105,7 @@ void Total_tasks_Init()
 	pid_yaw_gy.SetMixI(3,0,5);
 	pid_yaw_gy.pid.td_e.r = 2;
 	pid_yaw_gy.pid.td_c_c_d.r = 300;
-	yaw_target_angle_gy = (int)chGy_chassis.gy.Add_z;
+//	yaw_target_angle_gy = (int)chGy_chassis.gy.Add_z;
 	
 	//pitch
 	// pid_pitch_gy.SetMixI(10000,0,5);
@@ -124,6 +124,8 @@ void Total_tasks_Init()
 	//右摩擦轮设置
 	ladrc_friction_r.set_is_separate_wc(800,200);
 	ladrc_friction_r.set_is_separate_w0(100,5000,1000000);
+	
+//	pid_pitch_angle.SetMixI(5000, 0, 0);
 	
 	//记录上一次时间
 	uint64_t time_adrc = HAL_GetTick();
@@ -155,7 +157,7 @@ void Total_tasks_Run()
 {	
 //	ch_gyro_232_ore(&ch_gyro_232_uart_chassis,&chGy_chassis);//处理陀螺仪ore问题
 //	servos.SetAngle(servos_angle);//舵机
-	Get_Chassis_to_Gimbal_ore(&Send_Gimbal_to_Chassis_Huart);
+//	Get_Chassis_to_Gimbal_ore(&Send_Gimbal_to_Chassis_Huart);
 	if(Total_tasks_staticTime.ISOne(2))//控制地盘can发送频率
 	{
 
@@ -386,6 +388,7 @@ int16_t idx = 0;
 int16_t data_angle[400];
 int16_t data_T[400];
 int8_t data_star = 0;
+
 void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)//回调函数
 {
 	if(htim == &htim6)
@@ -399,14 +402,15 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)//回调函数
 			mode1 = true;
 			is_run = true;
 			
-			if(RC_RY > 15)//移动云台pitch
+			if(abs(RC_RY) > 15)//移动云台pitch
 			{
-				pitch_target_angle_gy += 0.02;
+				pitch_target_angle_gy -= RC_RY * 0.003;
 			}
-			else if(RC_RY < -15)
-			{
-				pitch_target_angle_gy -= 0.02;
-			}
+//			else if(RC_RY < -15)
+//			{
+//				pitch_target_angle_gy -= 0.8;
+//			}
+			
 			if(RC_RX > 15)//移动云台yaw
 			{
 				yaw_target_angle_gy -= 0.2;
@@ -419,9 +423,20 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)//回调函数
 			{
 				int32_t shoot_time_tick = HAL_GetTick();
 				
+				
+				//弹速控制
+				if (RC_SW >= 660) 
+						shoot_time = 50;
+				else if (RC_SW >= 440) 
+						shoot_time = 100;
+				else if (RC_SW >= 220) 
+						shoot_time = 200;
+				else
+						shoot_time = 300; 
+
 				if(RC_SW > 0 && shoot_time_tick - shoot_time_ms >= shoot_time)
 				{
-					Dial_angle -= 32764;
+					Dial_angle -= 49146;							//8191 * 减速比(36) / 弹舱载弹数
 					shoot_time_ms = shoot_time_tick;
 					is_on_test = 1;		
 				}
@@ -456,6 +471,8 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)//回调函数
 				is_on_test = Friction_Speed = Dial_Speed = test_gy_v = 0;
 				Combinatoria_Movement_Fun(0,0);
 			}
+
+
 		}
 		//键鼠
 		else if(Keyboard_Mouse == true)
@@ -657,8 +674,15 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)//回调函数
 		pid_yaw_gy.GetNoLinePid(kpid_yaw_gy,td_yaw_gy.x1 + xxsdff,td_yaw_target_angle_gy.x1,max_yaw_t);
 //		yaw_ff.UpData2(td_yaw_gy.x1 + xxsdff);
 
+		//Pitch PID
+		if(pitch_target_angle_gy >= 2850.0)
+			pitch_target_angle_gy = 2850.0;
+		else if(pitch_target_angle_gy <= 2356.0)
+			pitch_target_angle_gy = 2356.0;
+
+		
 		td_pitch_Encoder_speed.td_quadratic(Motor6020.GetMotorDataSpeed(PITCH_MOTOR_ID));
-		pid_pitch_angle.GetPidPos(kpid_pitch_angle, pitch_target_angle_Encoder, Motor6020.GetMotorDataPos(PITCH_MOTOR_ID), 30000);
+		pid_pitch_angle.GetPidPos(kpid_pitch_angle, pitch_target_angle_gy, Motor6020.GetMotorDataPos(PITCH_MOTOR_ID), 30000);
 		pid_pitch_speed.GetPidPos(kpid_pitch_speed, pid_pitch_angle.pid.cout, td_pitch_Encoder_speed.x1, 30000);
 
 		//pitch				
@@ -700,10 +724,6 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)//回调函数
 //		{
 //			ladrc_friction_l.z3 = ladrc_friction_r.z3= 0;
 //		}
-		if(Motor2006.ISDir() != 0)
-		{
-			ladrc_dial.z3 = 0;
-		}
 		
 		if((Emergency_Stop == true) | (is_run == false))//停止模式
 		{                                                                                                                                   
@@ -749,13 +769,10 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)//回调函数
 		send_motor_ms++;
 		send_motor_ms %= 2;
 		
-	*((float*)&send_str2[0]) = Motor2006.GetMotorDataSpeed(0x201);
-	*((float*)&send_str2[4]) = Dial_angle/32764;
-	*((float*)&send_str2[8]) = RC_LX;
+		*((float*)&send_str2[0]) = Motor3508.GetMotor(Friction_MOTOR_L_ID)->Data[Motor_Data_Speed];
+		*((float*)&send_str2[4]) = Motor3508.GetMotor(Friction_MOTOR_R_ID)->Data[Motor_Data_Speed];
 
-
-	*((uint32_t*)&send_str2[sizeof(float) * (7)]) = 0x7f800000;
-	HAL_UART_Transmit_DMA(&Send_Usart_Data_Huart, send_str2, sizeof(float) * (7 + 1));
-		//给底盘发送数据
+		*((uint32_t*)&send_str2[sizeof(float) * (7)]) = 0x7f800000;
+		HAL_UART_Transmit_DMA(&Send_Usart_Data_Huart, send_str2, sizeof(float) * (7 + 1));
 	}
 }

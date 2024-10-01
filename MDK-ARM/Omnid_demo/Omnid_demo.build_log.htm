@@ -17,7 +17,7 @@ Library Manager: ArmAr.exe V5.06 update 7 (build 960)
 Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
 CPU DLL:         SARMCM3.DLL V5.32.0.0
 Dialog DLL:      DCM.DLL V1.17.3.0
-Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.8.0
+Target DLL:      CMSIS_AGDI.dll V1.32.12.0
 Dialog DLL:      TCM.DLL V1.46.0.0
  
 <h2>Project:</h2>
@@ -30,12 +30,6 @@ Build target 'Omnid_demo'
 compiling main.cpp...
 ..\RM_File\RM_stm32fxxx_hal.h(49): warning:  #1-D: last line of file ends without a newline
   /**************************************************************************/
-..\RM_File\RM_Clicker.h(95): error:  #20: identifier "huart3" is undefined
-  	HAL_UARTEx_ReceiveToIdle_IT(&ClickerHuart,RM_Clicker::pData,sizeof(RM_Clicker::pData));
-..\RM_File\RM_Clicker.h(130): error:  #20: identifier "huart3" is undefined
-  	if(RC_Ctl.Dir)RM_Clicker::ClearORE(&ClickerHuart,RM_Clicker::pData,sizeof(RM_Clicker::pData));
-..\RM_File\RM_Clicker.h(137): error:  #20: identifier "huart3" is undefined
-  	if(huart == &ClickerHuart && Size == sizeof(RM_Clicker::pData))
 ..\RM_File\ladrc.h(13): warning:  #1035-D: single-precision operand implicitly converted to double-precision
       y2 = k * x1 + (1.0 - k) * x2;
 ..\RM_File\ladrc.h(71): warning:  #1035-D: single-precision operand implicitly converted to double-precision
@@ -62,13 +56,13 @@ compiling main.cpp...
             this->bt2 = 3.0 * this->w0 * this->w0;//β2
 ..\RM_File\ladrc.h(333): warning:  #1035-D: single-precision operand implicitly converted to double-precision
             this->kd = 2.0 * this->wc;
-..\RM_File\RM_PID.h(315): warning:  #1299-D: members and base-classes will be initialized in declaration order, not in member initialisation list order
+..\RM_File\RM_PID.h(316): warning:  #1299-D: members and base-classes will be initialized in declaration order, not in member initialisation list order
   	:dt(dt),k(k),max_target_e(max_target_e),max_cout(max_cout),cout_k(cout_k){}
-..\RM_File\RM_PID.h(315): warning:  #1299-D: members and base-classes will be initialized in declaration order, not in member initialisation list order
+..\RM_File\RM_PID.h(316): warning:  #1299-D: members and base-classes will be initialized in declaration order, not in member initialisation list order
   	:dt(dt),k(k),max_target_e(max_target_e),max_cout(max_cout),cout_k(cout_k){}
-..\RM_File\RM_PID.h(377): warning:  #427-D: qualified name is not allowed in member declaration
+..\RM_File\RM_PID.h(378): warning:  #427-D: qualified name is not allowed in member declaration
   	double UDE::UpData(double Xnt, double u, double k, double B, double max, double err);
-..\RM_File\RM_PID.h(391): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\RM_File\RM_PID.h(392): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   		this->ude.I_u = this->ude.I_u*0.7 ;
 ..\RM_File\RM_Motor.h(394): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   	if(expectations - feedback > maxspeed * 0.5)expectations -= maxspeed;
@@ -92,32 +86,35 @@ compiling main.cpp...
   float _yaw_init_encoder_angle_ = (r2g_180(2.81839752)); //编码器绝对值初始化（第一次初始化的参数）
 ..\RM_File\def_variable.h(325): warning:  #1-D: last line of file ends without a newline
   void Get_Chassis_to_Gimbal_ore(UART_HandleTypeDef* huart);//解决ore问题
-..\RM_File\Total_stack.h(368): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	c = Fign_Fun(15.0 - t) * 0.5;
-..\RM_File\Total_stack.h(369): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	a = c + 0.5;
 ..\RM_File\Total_stack.h(370): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  	b = -(c - 0.5);
+  	c = Fign_Fun(15.0 - t) * 0.5;
+..\RM_File\Total_stack.h(371): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	a = c + 0.5;
 ..\RM_File\Total_stack.h(372): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  	b = -(c - 0.5);
+..\RM_File\Total_stack.h(374): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   	t += 0.001;
-..\RM_File\Total_stack.h(404): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  				pitch_target_angle_gy += 0.02;
-..\RM_File\Total_stack.h(408): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  				pitch_target_angle_gy -= 0.02;
-..\RM_File\Total_stack.h(412): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-  				yaw_target_angle_gy -= 0.2;
 ..\RM_File\Total_stack.h(416): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				yaw_target_angle_gy -= 0.2;
+..\RM_File\Total_stack.h(420): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   				yaw_target_angle_gy += 0.2;
-..\RM_File\Total_stack.h(575): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\RM_File\Total_stack.h(592): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   			if((fabs((fabs(ladrc_friction_l.z1) + fabs(ladrc_friction_r.z1)) * 0.5) - fabs(Friction_Speed)) < Friction_Speed * 0.4)is_on_MCL = true;
-..\RM_File\Total_stack.h(575): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\RM_File\Total_stack.h(592): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   			if((fabs((fabs(ladrc_friction_l.z1) + fabs(ladrc_friction_r.z1)) * 0.5) - fabs(Friction_Speed)) < Friction_Speed * 0.4)is_on_MCL = true;
-..\RM_File\Total_stack.h(580): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\RM_File\Total_stack.h(597): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   			if((fabs(fabs(ladrc_dial.z1) - fabs(Dial_Speed)) < Dial_Speed * 0.5))is_on_BP = true;
-..\RM_File\Total_stack.h(650): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\RM_File\Total_stack.h(667): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   			sintt += 0.001;
-..\Core\Src\main.cpp: 41 warnings, 3 errors
-"Omnid_demo\Omnid_demo.axf" - 3 Error(s), 41 Warning(s).
+..\RM_File\Total_stack.h(678): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		if(pitch_target_angle_gy >= 2850.0)
+..\RM_File\Total_stack.h(680): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		else if(pitch_target_angle_gy <= 2356.0)
+..\Core\Src\main.cpp: 41 warnings, 0 errors
+linking...
+Program Size: Code=29004 RO-data=1752 RW-data=308 ZI-data=10748  
+FromELF: creating hex file...
+"Omnid_demo\Omnid_demo.axf" - 0 Error(s), 41 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -141,8 +138,7 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.4.0
       Include file:  CMSIS\Core\Include\tz_context.h
-Target not created.
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
