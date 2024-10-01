@@ -26,7 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "Total_stack.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,7 +101,9 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-
+	Total_tasks_Init();//?????????????
+	HAL_TIM_Base_Start_IT(&htim6);//?????????
+	HAL_TIM_Base_Start_IT(&htim5);//????
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,6 +113,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		Total_tasks_Run();	
   }
   /* USER CODE END 3 */
 }
