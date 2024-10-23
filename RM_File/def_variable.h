@@ -120,7 +120,7 @@ RM_StaticTime Total_tasks_staticTime;//控制时间x
 //摩擦轮
 #define Friction_MOTOR_L_ID 0x201
 #define Friction_MOTOR_R_ID 0x202
-#define Friction_MAX_Speed 6500
+#define Friction_MAX_Speed 1000
 
 //拨盘
 #define Dial_MOTOR_R_ID 0x204
@@ -169,10 +169,10 @@ RM_Key Mode2_key;
 //RM_FeedForward pitch_ff(0.3,100000,30000,30000);
 //pitch
 float pitch_target_angle_gy = 0;//pitch期望角度,陀螺仪
-
+float pitch_target_angle = 0;
 float pitch_target_angle_Encoder = 0;//pitch期望角度,陀螺仪
 Kpid_t kpid_pitch_angle(0.2, 0, 0);
-Kpid_t kpid_pitch_speed(500, 0, 0);
+Kpid_t kpid_pitch_speed(100, 0, 0);
 RM_PID pid_pitch_angle;
 RM_PID pid_pitch_speed;
 TD_quadratic td_pitch_Encoder_speed(100);

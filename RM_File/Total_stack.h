@@ -404,7 +404,7 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)//回调函数
 			
 			if(abs(RC_RY) > 15)//移动云台pitch
 			{
-				pitch_target_angle_gy -= RC_RY * 0.003;
+				pitch_target_angle_gy -= RC_RY * 0.03;
 			}
 //			else if(RC_RY < -15)
 //			{
@@ -674,15 +674,15 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim)//回调函数
 		pid_yaw_gy.GetNoLinePid(kpid_yaw_gy,td_yaw_gy.x1 + xxsdff,td_yaw_target_angle_gy.x1,max_yaw_t);
 //		yaw_ff.UpData2(td_yaw_gy.x1 + xxsdff);
 
-		//Pitch PID
-		if(pitch_target_angle_gy >= 2850.0)
-			pitch_target_angle_gy = 2850.0;
-		else if(pitch_target_angle_gy <= 2356.0)
-			pitch_target_angle_gy = 2356.0;
-
-		
+//		//Pitch PID
+//		if(pitch_target_angle_gy >= 2850.0)
+//			pitch_target_angle_gy = 2850.0;
+//		else if(pitch_target_angle_gy <= 2356.0)
+//			pitch_target_angle_gy = 2356.0;
+		pitch_target_angle_gy = fmod(pitch_target_angle_gy,8191);
+		pitch_target_angle = Zero_crossing_processing(pitch_target_angle_gy, Motor6020.GetMotorDataPos(PITCH_MOTOR_ID), 8191);
 		td_pitch_Encoder_speed.td_quadratic(Motor6020.GetMotorDataSpeed(PITCH_MOTOR_ID));
-		pid_pitch_angle.GetPidPos(kpid_pitch_angle, pitch_target_angle_gy, Motor6020.GetMotorDataPos(PITCH_MOTOR_ID), 30000);
+		pid_pitch_angle.GetPidPos(kpid_pitch_angle, pitch_target_angle, Motor6020.GetMotorDataPos(PITCH_MOTOR_ID), 30000);
 		pid_pitch_speed.GetPidPos(kpid_pitch_speed, pid_pitch_angle.pid.cout, td_pitch_Encoder_speed.x1, 30000);
 
 		//pitch				

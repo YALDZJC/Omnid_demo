@@ -168,7 +168,7 @@
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>_Motor6020_,0x0A</ItemText>
+          <ItemText>_Motor6020_,0x10</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
@@ -214,6 +214,26 @@
           <count>11</count>
           <WinNumber>1</WinNumber>
           <ItemText>(int16_t)(RM_Clicker::RC_Ctl.rc.ch1 - 1024),0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>12</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Friction_Speed</ItemText>
+        </Ww>
+        <Ww>
+          <count>13</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>((RM_Clicker::RC_Ctl.rc.s1 == 3) &amp;&amp; RM_Clicker::RC_Ctl.rc.s2 == 1),0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>14</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>((RM_Clicker::RC_Ctl.rc.s1 == 3) &amp;&amp; RM_Clicker::RC_Ctl.rc.s2 == 1)</ItemText>
+        </Ww>
+        <Ww>
+          <count>15</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>kpid_pitch_speed</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
